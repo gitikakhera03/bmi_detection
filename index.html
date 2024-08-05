@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Face Detection and BMI Prediction</title>
+  </head>
+  <body>
+    <h1>Face Detection and BMI Prediction</h1>
+    <form action="/predict" method="post" enctype="multipart/form-data">
+      <input type="file" name="image" accept="image/*">
+      <button type="submit">Upload Image</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+      const form = document.querySelector('form');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const image = document.querySelector('input[type="file"]').files[0];
+        const formData = new FormData();
+        formData.append('image', image);
+        const response = await fetch('/predict', {
+          method: 'POST',
+          body: formData,
+        });
+        const result = await response.json();
+        document.querySelector('#result').innerHTML = `Estimated BMI: ${result.bmi}`;
+      });
+    </script>
+  </body>
+</html>
